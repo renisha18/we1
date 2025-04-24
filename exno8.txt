@@ -1,0 +1,29 @@
+MySQL Database Setup:
+CREATE DATABASE library;
+USE library;
+CREATE TABLE books (
+id INT AUTO_INCREMENT PRIMARY KEY,
+username VARCHAR(50),
+bookname VARCHAR(100)
+);
+PHP + HTML Code(form.php):
+<form method="POST">
+Name: <input type="text" name="username"><br>
+Book: <input type="text" name="book"><br>
+<input type="submit" name="submit" value="Save">
+</form>
+<?php
+<?php
+if (isset($_POST['submit'])) {
+$conn = new mysqli("localhost", "root", "", "library");
+$name = $_POST['username'];
+$book = $_POST['book'];
+$conn->query("INSERT INTO books (username, bookname) VALUES ('$name', '$book')");
+echo "Saved successfully!";
+}
+?>
+Dynamic Book Catalogue:
+$result = $conn->query("SELECT * FROM books");
+while($row = $result->fetch_assoc()) {
+echo "<p>{$row['username']} - {$row['bookname']}</p>";
+}

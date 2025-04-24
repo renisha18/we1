@@ -1,0 +1,58 @@
+1. Database Structure (MySQL)
+CREATE DATABASE student_db;
+USE student_db;
+USE student_db;
+CREATE TABLE students (
+id INT AUTO_INCREMENT PRIMARY KEY,
+name VARCHAR(255),
+marks INT
+);
+INSERT INTO students (name, marks) VALUES
+('Alice', 85),
+('Bob', 90),
+('Charlie', 78);
+Servlet Code (MarkListServlet.java):
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import jakarta.servlet.annotation.WebServlet;
+import java.io.*;
+import java.sql.*;
+@WebServlet("/MarkList")
+public class MarkListServlet extends HttpServlet {
+protected void doGet(HttpServletRequest request, HttpServletResponse response) throws
+ServletException, IOException {
+response.setContentType("text/html");
+PrintWriter out = response.getWriter();
+PrintWriter out = response.getWriter();
+// Database connection
+try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/
+student_db", "root", "yourpassword")) {
+Statement stmt = conn.createStatement();
+ResultSet rs = stmt.executeQuery("SELECT * FROM students");
+// Displaying data
+out.println("<html><body>");
+out.println("<h2>Student Mark List</h2>");
+out.println("<table border='1'><tr><th>Name</th><th>Marks</th></tr>");
+while (rs.next()) {
+out.println("<tr><td>" + rs.getString("name") + "</td><td>" + rs.getInt("marks") + "</
+td></tr>");
+}
+out.println("</table></body></html>");
+} catch (SQLException e) {
+e.printStackTrace();
+}
+}
+}
+Simple HTML Page (index.html):
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<head>
+<meta charset="UTF-8">
+<title>Student Mark List</title>
+</head>
+<body>
+<h1>Student Mark List</h1>
+<a href="MarkList">View Mark List</a>
+</body>
+</html>

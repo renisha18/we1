@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Session Tracker</title>
+</head>
+<body>
+<form action="http://localhost:8080/EX5b/Servlet1" method="get">
+<input type="hidden" name="count" value="0">
+<input type="submit" value="Go to Servlet">
+</form>
+</body>
+</html>
+Servlet1.java:
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import jakarta.servlet.annotation.WebServlet;
+import java.io.*;
+@WebServlet("/Servlet1")
+public class Servlet1 extends HttpServlet {
+@Override
+protected void doGet(HttpServletRequest req, HttpServletResponse res)
+throws ServletException, IOException {
+res.setContentType("text/html");
+PrintWriter out = res.getWriter();
+HttpSession session = req.getSession();
+Integer count = (Integer) session.getAttribute("count");
+if (count == null) {
+count = 1;
+} else {
+count++;
+}
+session.setAttribute("count", count);
+out.println("<html><head><title>Session Tracker</title></head><body>");
+out.println("<h1>Session Tracking Demo</h1>");
+out.println("<p>You have visited this page " + count + " time(s).</p>");
+out.println("</body></html>");
+}
+}

@@ -1,0 +1,38 @@
+Form (contact.html):
+<form action="ContactServlet" method="post">
+<input name="fname" placeholder="First Name"><br>
+<input name="lname" placeholder="Last Name"><br>
+<input name="lname" placeholder="Last Name"><br>
+<input name="phone" placeholder="Phone"><br>
+<input name="email" type="email" placeholder="Email"><br>
+<input name="dob" type="date"><br>
+<input name="nickname" placeholder="Nick Name"><br>
+<input type="submit" value="Submit">
+</form>
+Servlet (ContactServlet.java):
+public void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException {
+String fname = req.getParameter("fname");
+String lname = req.getParameter("lname");
+String phone = req.getParameter("phone");
+String email = req.getParameter("email");
+String dob = req.getParameter("dob");
+String nickname = req.getParameter("nickname");
+try {
+Class.forName("com.mysql.cj.jdbc.Driver");
+Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/contactsdb",
+"root", "password");
+PreparedStatement ps = con.prepareStatement("INSERT INTO contacts (fname, lname, phone,
+email, dob, nickname) VALUES (?, ?, ?, ?, ?, ?)");
+ps.setString(1, fname);
+ps.setString(2, lname);
+ps.setString(3, phone);
+ps.setString(4, email);
+ps.setString(4, email);
+ps.setString(5, dob);
+ps.setString(6, nickname);
+ps.executeUpdate();
+con.close();
+} catch (Exception e) {
+res.getWriter().println(e);
+}
+}

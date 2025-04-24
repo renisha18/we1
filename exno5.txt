@@ -1,0 +1,42 @@
+Index.html:
+<!DOCTYPE html>
+<html>
+<head>
+<title>Servlet</title>
+</head>
+<body>
+<form action="http://localhost:8080/EX5a/Servlet1" method="get">
+<input type="submit" value="Go to Servlet">
+</form>
+</body>
+</html>
+Servlet1.java:
+import jakarta.servlet.*;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.*;
+import java.io.*;
+@WebServlet("/Servlet1")
+public class Servlet1 extends HttpServlet {
+protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+throws ServletException, IOException {
+response.setContentType("text/html");
+PrintWriter out = response.getWriter();
+out.println("<html><head><title>Servlet Response</title></head>");
+out.println("<body><h1>Welcome to Servlet</h1>");
+out.println("<p>Servlet successfully processed the request.</p></body></html>");
+}
+@Override
+protected void doGet(HttpServletRequest request, HttpServletResponse response)
+throws ServletException, IOException {
+processRequest(request, response);
+}
+@Override
+protected void doPost(HttpServletRequest request, HttpServletResponse response)
+throws ServletException, IOException {
+processRequest(request, response);
+}
+@Override
+public String getServletInfo() {
+return "Servlet handling GET and POST requests";
+}
+}

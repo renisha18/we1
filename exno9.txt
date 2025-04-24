@@ -1,0 +1,30 @@
+<form method="post">
+First Name: <input type="text" name="fname"><br>
+Last Name: <input type="text" name="lname"><br>
+Phone: <input type="text" name="phone"><br>
+Email: <input type="email" name="email"><br>
+DOB: <input type="date" name="dob"><br>
+Nick Name: <input type="text" name="nickname"><br>
+<input type="submit" name="save" value="Submit">
+</form>
+<?php
+if (isset($_POST['save'])) {
+$conn = new mysqli("localhost", "root", "", "contactsdb");
+$conn->query("INSERT INTO contacts (fname, lname, phone, email, dob, nickname)VALUES
+('$_POST[fname]', '$_POST[lname]', '$_POST[phone]', '$_POST[email]', '$_POST[dob]',
+'$_POST[nickname]')");
+echo "Contact saved!";
+}
+?>
+DB Setup:
+CREATE DATABASE contactsdb;
+USE contactsdb;
+CREATE TABLE contacts (
+id INT AUTO_INCREMENT PRIMARY KEY,
+fname VARCHAR(50),
+lname VARCHAR(50),
+phone VARCHAR(20),
+email VARCHAR(100),
+dob DATE,
+nickname VARCHAR(50)
+);

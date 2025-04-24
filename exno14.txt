@@ -1,0 +1,68 @@
+<form action="SubmitQuiz" method="post">
+  Name: <input type="text" name="name" required><br><br>
+  1. Capital of France? <input type="text" name="q1"><br>
+  2. 5 + 5 = ? <input type="text" name="q2"><br>
+  3. Color of sky? <input type="text" name="q3"><br><br>
+  <input type="submit" value="Submit">
+</form>
+
+
+CREATE TABLE quiz_answers (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100),
+  q1 VARCHAR(100),
+  q2 VARCHAR(100),
+  q3 VARCHAR(100)
+);
+
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import jakarta.servlet.annotation.WebServlet;
+import java.io.*;
+import java.sql.*;
+
+@WebServlet("/SubmitQuiz")
+public class SubmitQuiz extends HttpServlet {
+  protected void doPost(HttpServletRequest req, HttpServletResponse res)
+          throws ServletException, IOException {
+    String name = req.getParameter("name");
+    String q1 = req.getParameter("q1");
+    String q2 = req.getParameter("q2");
+    String q3 = req.getParameter("q3");
+
+    try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/quiz_db", "root", "yourpassword")) {
+      PreparedStatement ps = conn.prepareStatement("INSERT INTO quiz_answers (name, q1, q2, q3) VALUES (?, ?, ?, ?)");
+      ps.setString(1, name);
+      ps.setString(2, q1);
+      ps.setString(3, q2);
+      ps.setString(4, q3);
+      ps.executeUpdate();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+
+    res.getWriter().println("<p>Thank you for submitting, " + name + "!</p>");
+  }
+}
+
+@WebServlet("/Winner")
+public class Winner extends HttpServlet {
+  protected void doGet(HttpServletRequest req, HttpServletResponse res)
+          throws ServletException, IOException {
+    res.setContentType("text/html");
+    PrintWriter out = res.getWriter();
+
+    try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/quiz_db", "root", "yourpassword")) {
+      Statement stmt = conn.createStatement();
+      ResultSet rs = stmt.executeQuery("SELECT name FROM quiz_answers WHERE q1='Paris' AND q2='10' AND q3='Blue'");
+
+      out.println("<h2>Quiz Winner(s):</h2><ul>");
+      while (rs.next()) {
+        out.println("<li>" + rs.getString("name") + "</li>");
+      }
+      out.println("</ul>");
+    } catch (SQLException e) {
+      out.println("<p>Error!</p>");
+    }
+  }
+}
