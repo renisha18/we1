@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Simple Calculator</title>
+<style>
+input, button { margin: 5px; padding: 10px; font-size: 16px; }
+</style>
+</head>
+<body>
+<h2>Calculator</h2>
+<input type="number" id="num1">
+<input type="number" id="num2">
+<button onclick="calc('+')">+</button>
+<button onclick="calc('-')">-</button>
+<button onclick="calc('*')">*</button>
+<button onclick="calc('/')">/</button>
+<p id="result"></p>
+<script>
+    function calc(op){
+        let a=parseFloat(document.getElementById("num1").value);
+        let b=parseFloat(document.getElementById("num2").value);
+        let res={'+':a+b,'-':a-b,'*':a*b,'/':a/b}[op];
+        document.getElementById("result").innerText="result"+res;
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>COllege website</title>
+    <script>
+        function show(tab){
+            document.getElementById("content").innerHTML={
+                home:"Welcome to college",
+                admission:"Admission are open",
+                contact:"COntact laam venam",
+                infrastructure:"Hey there"
+            }[tab]
+        }
+ 
+    </script>
+</head>
+<body>
+    <h1>My College</h1>
+<div class="nav">
+<button onclick="show('home')">Home</button>
+<button onclick="show('admission')">Admission</button>
+<button onclick="show('contact')">Contact</button>
+<button onclick="show('infrastructure')">Infrastructure</button>
+</div>
+<div id="content" class="box">Click a tab to view content</div>
+</body>
+</html>
